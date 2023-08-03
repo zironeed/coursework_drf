@@ -6,7 +6,7 @@ NULLABLE = {'null': True, 'blank': True}
 
 
 class Habit(models.Model):
-    user = models.ForeignKey('AUTH_USER_MODEL', on_delete=models.CASCADE, verbose_name='user', **NULLABLE)
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='user', **NULLABLE)
     place = models.CharField(max_length=100, verbose_name='place')
     time = models.TimeField(default=now, verbose_name='habit starts')
     action = models.TextField(verbose_name='action')
