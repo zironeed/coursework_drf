@@ -1,16 +1,15 @@
 from django.shortcuts import render
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
-from config.settings import AUTH_USER_MODEL
 
 from spa_app.models import Habit
 from spa_app.serializers import HabitSerializer
+from spa_app.paginators import HabitPagination
 
 
 class HabitPublishListView(ListAPIView):
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
-
-    # pagination_class =
+    pagination_class = HabitPagination
     # permission_classes =
 
     def get_queryset(self):
@@ -27,6 +26,7 @@ class HabitPublishListView(ListAPIView):
 class HabitPrivateListView(ListAPIView):
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
+    pagination_class = HabitPagination
 
     def get_queryset(self):
         user = self.request.user
@@ -43,6 +43,7 @@ class HabitPrivateListView(ListAPIView):
 class HabitCreateView(CreateAPIView):
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
+    pagination_class = HabitPagination
 
     def perform_create(self, serializer):
         new_habit = serializer.save()
@@ -53,13 +54,16 @@ class HabitCreateView(CreateAPIView):
 class HabitRetrieveView(RetrieveAPIView):
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
+    pagination_class = HabitPagination
 
 
 class HabitUpdateView(UpdateAPIView):
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
+    pagination_class = HabitPagination
 
 
 class HabitDestroyView(DestroyAPIView):
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
+    pagination_class = HabitPagination
