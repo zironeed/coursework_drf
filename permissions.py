@@ -8,3 +8,9 @@ class IsOwner(BasePermission):
             return True
 
         return request.user == obj.user
+
+
+class CanDelete(BasePermission):
+
+    def has_object_permission(self, request, view, obj):
+        return not obj.published

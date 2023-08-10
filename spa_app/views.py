@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from spa_app.models import Habit
 from spa_app.serializers import HabitSerializer
 from spa_app.paginators import HabitPagination
-from permissions import IsOwner
+from permissions import IsOwner, CanDelete
 
 
 class HabitPublishListView(ListAPIView):
@@ -70,4 +70,4 @@ class HabitDestroyView(DestroyAPIView):
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
     pagination_class = HabitPagination
-    permission_classes = [IsAuthenticated, IsOwner]
+    permission_classes = [IsAuthenticated, IsOwner, CanDelete]
