@@ -32,6 +32,8 @@ DEBUG = os.getenv('DEBUG') == 'True'
 
 ALLOWED_HOSTS = []
 
+TG_TOKEN = os.getenv('TG_TOKEN')
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -160,3 +162,10 @@ LOGIN_REDIRECT_URL = '/'
 
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
+
+CELERY_BEAT_SCHEDULE = {
+    'habit_checker': {
+        'task': 'habit_checker',
+        'schedule': ''  # доделай
+    }
+}
