@@ -1,6 +1,3 @@
-from django_celery_beat.models import PeriodicTask, IntervalSchedule
-from datetime import datetime, timedelta
-import json
 import requests
 from datetime import datetime
 
@@ -40,3 +37,18 @@ def habit_schedule():
 
                 url = f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage?chat_id={chat_id}&text={message}"
                 requests.get(url)
+
+        else:
+            today = datetime.today().weekday()
+            if habit.frequency == today:
+                if habit.time.strftime('%H:%M') == now.strftime('%H:%M'):
+                    chat_id = habit.user.chat_id
+
+                    if habit.reward:
+                        message = f'I will {habit.action} at {habit.time} in {habit.place}. My reward is {habit.reward}'
+                    else:
+                        message = f'I will {habit.action} at {habit.time} in {habit.place}.'
+
+                    url = f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage?chat_id={chat_id}&text={message}"
+                    requests.get(url)
+
