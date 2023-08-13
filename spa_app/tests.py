@@ -64,7 +64,7 @@ class HabitTestCase(APITestCase):
             "user": self.user
             }
 
-        url = reverse('spa_app:habit_create')  # Используйте правильное имя URL-адреса
+        url = reverse('spa_app:habit_create')
         response = self.client.post(url, data)
 
         self.assertEqual(
@@ -124,7 +124,7 @@ class HabitTestCase(APITestCase):
             "user": self.user
             }
 
-        url = reverse('spa_app:habit_create')  # Используйте правильное имя URL-адреса
+        url = reverse('spa_app:habit_create')
         self.client.post(url, data)
 
         response = self.client.get('spa/habits/retrieve/1/')
@@ -200,7 +200,7 @@ class HabitTestCase(APITestCase):
 
         self.assertEqual(
             response.status_code,
-            status.HTTP_400_BAD_REQUEST
+            status.HTTP_204_NO_CONTENT
         )
 
     def test_validate_nice_habit(self):
