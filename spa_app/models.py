@@ -1,25 +1,25 @@
 from django.db import models
 from config.settings import AUTH_USER_MODEL
-from django.utils.timezone import now
+from datetime import datetime
 
 NULLABLE = {'null': True, 'blank': True}
 
 
+class FrequencyChoices(models.TextChoices):
+    Daily = 'DAILY'
+    Mo = 'MONDAY'
+    Tu = 'TUESDAY'
+    We = 'WEDNESDAY'
+    Th = 'THURSDAY'
+    Fr = 'FRIDAY'
+    Sa = 'SATURDAY'
+    Su = 'SUNDAY'
+
+
 class Habit(models.Model):
-
-    class FrequencyChoices(models.TextChoices):
-        Daily = 'DAILY'
-        Mo = 'MONDAY'
-        Tu = 'TUESDAY'
-        We = 'WEDNESDAY'
-        Th = 'THURSDAY'
-        Fr = 'FRIDAY'
-        Sa = 'SATURDAY'
-        Su = 'SUNDAY'
-
     user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='user', **NULLABLE)
     place = models.CharField(max_length=100, verbose_name='place')
-    time = models.TimeField(default=now, verbose_name='habit starts')
+    time = models.TimeField(default=datetime.now().time(), verbose_name='habit starts')
     action = models.TextField(verbose_name='action')
     nice_habit = models.BooleanField(default=False, verbose_name='is nice habit')
     linked_habit = models.ForeignKey('self', on_delete=models.CASCADE,
