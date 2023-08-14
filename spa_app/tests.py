@@ -54,6 +54,7 @@ class HabitTestCase(APITestCase):
         self.private_id = self.private_habit.id
 
     def test_create_habit(self):
+        """Test for HabitCreateView"""
         data = {
             "id": 5,
             "place": "TestCreate",
@@ -80,6 +81,7 @@ class HabitTestCase(APITestCase):
         )
 
     def test_public_list_habit(self):
+        """Test for HabitPublishListView"""
         url = reverse('spa_app:habit_publish')
 
         response = self.client.get(url)
@@ -95,6 +97,7 @@ class HabitTestCase(APITestCase):
         )
 
     def test_private_list_habit(self):
+        """Test for HabitPrivateListView"""
         url = reverse('spa_app:habit_private')
 
         response = self.client.get(url)
@@ -105,6 +108,7 @@ class HabitTestCase(APITestCase):
         )
 
     def test_detail_habit(self):
+        """Test for HabitRetrieveView"""
         url = reverse('spa_app:habit_retrieve', kwargs={'pk': self.private_habit.pk})
 
         response = self.client.get(url)
@@ -115,6 +119,7 @@ class HabitTestCase(APITestCase):
         )
 
     def test_update_habit(self):
+        """Test for HabitUpdateView"""
         update_data = {
             "place": "TestUpdate",
             "action": "TestUpdate",
@@ -132,6 +137,7 @@ class HabitTestCase(APITestCase):
         )
 
     def test_destroy_habit(self):
+        """Test for HabitDestroyView"""
         habit = Habit.objects.create(
             id=2,
             place='TestCreate',
@@ -153,6 +159,7 @@ class HabitTestCase(APITestCase):
         )
 
     def test_validate_duration(self):
+        """Test for duration validating"""
         data = {
             'place': 'TestCreate',
             'action': 'TestCreate',
@@ -172,6 +179,7 @@ class HabitTestCase(APITestCase):
         )
 
     def test_validate_nice_habit(self):
+        """Test for nice_habit validating"""
         data = {
             'place': 'TestCreate',
             'action': 'TestCreate',
@@ -192,17 +200,10 @@ class HabitTestCase(APITestCase):
         )
 
     def test_validate_default_habit(self):
-        nice_data = {
-            'place': 'TestCreate',
-            'action': 'TestCreate',
-            'nice_habit': True,
-            'frequency': FrequencyChoices.Mo,
-            'reward': 'The bag of chips',
-            'duration': 121,
-            'published': False,
-            'user': self.user
-        }
-
+        """
+        Test for default habit validating
+        (checking for reward and linked_habit)
+        """
         default_data = {
             'place': 'TestCreate',
             'action': 'TestCreate',

@@ -8,6 +8,7 @@ from permissions import IsOwner, CanDelete
 
 
 class HabitPublishListView(ListAPIView):
+    """Контроллер для списка публичных привычек"""
     serializer_class = HabitSerializer
     queryset = Habit.objects.filter(published=True)
     pagination_class = HabitPagination
@@ -25,6 +26,7 @@ class HabitPublishListView(ListAPIView):
 
 
 class HabitPrivateListView(ListAPIView):
+    """Контроллер для списка непубличных привычек"""
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
     pagination_class = HabitPagination
@@ -44,6 +46,7 @@ class HabitPrivateListView(ListAPIView):
 
 
 class HabitCreateView(CreateAPIView):
+    """Контроллер для создания привычек"""
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
 
@@ -54,18 +57,21 @@ class HabitCreateView(CreateAPIView):
 
 
 class HabitRetrieveView(RetrieveAPIView):
+    """Контроллер для просмотра отдельных привычек"""
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
     permission_classes = [IsAuthenticated, IsOwner]
 
 
 class HabitUpdateView(UpdateAPIView):
+    """Контроллер для обновления привычек"""
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
     permission_classes = [IsAuthenticated, IsOwner]
 
 
 class HabitDestroyView(DestroyAPIView):
+    """Контроллер для удаления привычек"""
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
     permission_classes = [IsAuthenticated, IsOwner, CanDelete]

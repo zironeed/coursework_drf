@@ -6,6 +6,7 @@ NULLABLE = {'null': True, 'blank': True}
 
 
 class FrequencyChoices(models.TextChoices):
+    """Choices for Habit -> frequency field"""
     Daily = 'DAILY'
     Mo = 'MONDAY'
     Tu = 'TUESDAY'
@@ -17,6 +18,7 @@ class FrequencyChoices(models.TextChoices):
 
 
 class Habit(models.Model):
+    """Model for default and nice habits"""
     user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='user', **NULLABLE)
     place = models.CharField(max_length=100, verbose_name='place')
     time = models.TimeField(default=datetime.now().time(), verbose_name='habit starts')

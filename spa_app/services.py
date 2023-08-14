@@ -7,6 +7,7 @@ from users.models import User
 
 
 def tg_update():
+    """Getting the chat_id parameter from the response"""
     url = f"https://api.telegram.org/bot{TG_TOKEN}/getUpdates"
     response = requests.get(url)
 
@@ -23,6 +24,7 @@ def tg_update():
 
 
 def habit_schedule():
+    """Schedule for notifications to users"""
     now = datetime.now()
 
     for habit in Habit.objects.filter(nice_habit=False):

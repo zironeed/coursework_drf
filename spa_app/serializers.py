@@ -4,8 +4,14 @@ from spa_app.models import Habit
 
 
 class HabitSerializer(serializers.ModelSerializer):
+    """Serializer for Habit objects"""
 
     def create(self, validated_data):
+        """
+        Checking the entered data for correctness
+        :param validated_data: data for validate
+        :return: Data ready for further work
+        """
         new_habit = Habit.objects.create(**validated_data)
 
         if new_habit.duration > 120:
