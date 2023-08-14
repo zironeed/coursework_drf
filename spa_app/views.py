@@ -15,6 +15,7 @@ class HabitPublishListView(ListAPIView):
     ordering_fields = ['pk']
 
     def get_queryset(self):
+        """Проверка флага публичной привычки"""
         habit_list = Habit.objects.all()
         habit_list_filtered = []
 
@@ -34,6 +35,7 @@ class HabitPrivateListView(ListAPIView):
     ordering_fields = ['pk']
 
     def get_queryset(self):
+        """Проверка владельца привычки"""
         user = self.request.user
         habit_list = Habit.objects.all()
         habit_list_filtered = []
@@ -51,6 +53,7 @@ class HabitCreateView(CreateAPIView):
     queryset = Habit.objects.all()
 
     def perform_create(self, serializer):
+        """Связывание привычки и владельца"""
         new_habit = serializer.save()
         new_habit.user = self.request.user
         new_habit.save()
