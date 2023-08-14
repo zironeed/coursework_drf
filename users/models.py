@@ -4,6 +4,7 @@ from spa_app.models import NULLABLE
 
 
 class User(AbstractUser):
+    """Model of users"""
     username = None
 
     email = models.EmailField(unique=True, max_length=50, verbose_name='email')

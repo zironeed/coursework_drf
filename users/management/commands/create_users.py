@@ -6,6 +6,7 @@ tg_name = 'AdolfNotHitler'
 
 
 class Command(BaseCommand):
+    """A command for easily creating a user and superuser"""
     def handle(self, *args, **options):
         admin = User.objects.create(
             email='admin@gmail.com',
