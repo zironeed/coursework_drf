@@ -3,8 +3,6 @@ from rest_framework import status
 from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework.test import APITestCase, APIClient
 
-from config.settings import AUTH_USER_MODEL
-
 from spa_app.models import Habit, FrequencyChoices
 from users.models import User
 

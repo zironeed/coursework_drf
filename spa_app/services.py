@@ -53,4 +53,3 @@ def habit_schedule():
 
                     url = f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage?chat_id={chat_id}&text={message}"
                     requests.get(url)
-

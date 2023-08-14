@@ -40,4 +40,3 @@ class Habit(models.Model):
         return f"""Action: {self.action}
         Place: {self.place}
         Time: {self.time}"""
-

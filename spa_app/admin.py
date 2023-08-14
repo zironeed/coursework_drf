@@ -1,4 +1,5 @@
 from django.contrib import admin
-from users.models import User
 
-admin.site.register(User)
+from spa_app.models import Habit
+
+admin.site.register(Habit)
