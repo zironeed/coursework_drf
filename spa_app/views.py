@@ -11,6 +11,17 @@ class HabitPublishListView(ListAPIView):
     serializer_class = HabitSerializer
     queryset = Habit.objects.filter(published=True)
     pagination_class = HabitPagination
+    ordering_fields = ['pk']
+
+    def get_queryset(self):
+        habit_list = Habit.objects.all()
+        habit_list_filtered = []
+
+        for habit in habit_list:
+            if habit.published:
+                habit_list_filtered.append(habit)
+
+        return habit_list_filtered
 
 
 class HabitPrivateListView(ListAPIView):
@@ -18,6 +29,7 @@ class HabitPrivateListView(ListAPIView):
     queryset = Habit.objects.all()
     pagination_class = HabitPagination
     permission_classes = [IsAuthenticated, IsOwner]
+    ordering_fields = ['pk']
 
     def get_queryset(self):
         user = self.request.user

@@ -30,11 +30,11 @@ class HabitTestCase(APITestCase):
             place="TestPublic",
             time="14:00:00",
             action="TestPublic",
-            nice_habit="False",
-            frequency="SUNDAY",
+            nice_habit=False,
+            frequency=FrequencyChoices.Fr,
             reward="The bag of chips",
             duration=10,
-            published="True",
+            published=True,
             user=self.user
         )
 
@@ -87,6 +87,11 @@ class HabitTestCase(APITestCase):
         self.assertEqual(
             response.status_code,
             status.HTTP_200_OK
+        )
+
+        self.assertEqual(
+            response.json()['count'],
+            1
         )
 
     def test_private_list_habit(self):
