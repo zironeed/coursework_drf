@@ -42,13 +42,16 @@ class HabitTestCase(APITestCase):
             place="TestDefault",
             time="14:00:00",
             action="TestDefault",
-            nice_habit="False",
-            frequency="SUNDAY",
+            nice_habit=False,
+            frequency=FrequencyChoices.Fr,
             reward="The bag of chips",
             duration=10,
-            published="False",
+            published=False,
             user=self.user
         )
+
+        self.public_id = self.public_habit.id
+        self.private_id = self.private_habit.id
 
     def test_create_habit(self):
         data = {
@@ -77,7 +80,9 @@ class HabitTestCase(APITestCase):
         )
 
     def test_public_list_habit(self):
-        response = self.client.get('spa/habits/publish/')
+        url = reverse('spa_app:habit_publish')
+
+        response = self.client.get(url)
 
         self.assertEqual(
             response.status_code,
@@ -85,25 +90,9 @@ class HabitTestCase(APITestCase):
         )
 
     def test_private_list_habit(self):
-        data = {
-            "id": 5,
-            "place": "TestCreate",
-            "time": "14:00:00",
-            "action": "TestCreate",
-            "nice_habit": "False",
-            "frequency": "SUNDAY",
-            "reward": "The bag of chips",
-            "duration": 10,
-            "published": "True",
-            "user": self.user
-            }
+        url = reverse('spa_app:habit_private')
 
-        self.client.post(
-            "/spa/habits/create/",
-            data
-        )
-
-        response = self.client.get('spa/habits/my/')
+        response = self.client.get(url)
 
         self.assertEqual(
             response.status_code,
@@ -111,23 +100,9 @@ class HabitTestCase(APITestCase):
         )
 
     def test_detail_habit(self):
-        data = {
-            "id": 5,
-            "place": "TestCreate",
-            "time": "14:00:00",
-            "action": "TestCreate",
-            "nice_habit": "False",
-            "frequency": "SUNDAY",
-            "reward": "The bag of chips",
-            "duration": 10,
-            "published": "True",
-            "user": self.user
-            }
+        url = reverse('spa_app:habit_retrieve', kwargs={'pk': self.private_habit.pk})
 
-        url = reverse('spa_app:habit_create')
-        self.client.post(url, data)
-
-        response = self.client.get('spa/habits/retrieve/1/')
+        response = self.client.get(url)
 
         self.assertEqual(
             response.status_code,
@@ -135,25 +110,13 @@ class HabitTestCase(APITestCase):
         )
 
     def test_update_habit(self):
-        data = {
-            "place": "TestCreate",
-            "time": "14:00:00",
-            "action": "TestCreate",
-            "nice_habit": "False",
-            "frequency": "SUNDAY",
-            "reward": "The bag of chips",
-            "duration": "10",
-            "published": "True",
-            }
-
         update_data = {
             "place": "TestUpdate",
             "action": "TestUpdate",
             }
 
-        habit = Habit.objects.create(**data)
-
-        response = self.client.put(reverse('spa_app:habit_update', kwargs={'pk': habit.pk}), data=update_data)
+        response = self.client.put(reverse('spa_app:habit_update', kwargs={'pk': self.private_habit.pk},
+                                           ), data=update_data)
 
         self.assertEqual(
             response.status_code,
@@ -181,42 +144,42 @@ class HabitTestCase(APITestCase):
 
         self.assertEqual(
             response.status_code,
-            status.HTTP_404_NOT_FOUND
+            status.HTTP_204_NO_CONTENT
         )
 
     def test_validate_duration(self):
         data = {
-            'id': 2,
             'place': 'TestCreate',
             'action': 'TestCreate',
-            'frequency': 'MONDAY',
+            'frequency': FrequencyChoices.Mo,
             'reward': 'The bag of chips',
             'duration': 121,
             'published': False,
             'user': self.user
         }
 
-        response = self.client.post('spa/habits/create/', data)
+        url = reverse('spa_app:habit_create')
+        response = self.client.post(url, data)
 
         self.assertEqual(
             response.status_code,
-            status.HTTP_204_NO_CONTENT
+            status.HTTP_400_BAD_REQUEST
         )
 
     def test_validate_nice_habit(self):
         data = {
-            'id': 2,
             'place': 'TestCreate',
             'action': 'TestCreate',
             'nice_habit': True,
-            'frequency': 'MONDAY',
+            'frequency': FrequencyChoices.Mo,
             'reward': 'The bag of chips',
-            'duration': 10,
+            'duration': 121,
             'published': False,
             'user': self.user
         }
 
-        response = self.client.post('spa/habits/create/', data)
+        url = reverse('spa_app:habit_create')
+        response = self.client.post(url, data)
 
         self.assertEqual(
             response.status_code,
@@ -224,20 +187,30 @@ class HabitTestCase(APITestCase):
         )
 
     def test_validate_default_habit(self):
-        data = {
-            'id': 2,
+        nice_data = {
             'place': 'TestCreate',
             'action': 'TestCreate',
-            'nice_habit': False,
-            'linked_habit': self.nice_habit.pk,
-            'frequency': 'MONDAY',
+            'nice_habit': True,
+            'frequency': FrequencyChoices.Mo,
             'reward': 'The bag of chips',
-            'duration': 10,
+            'duration': 121,
             'published': False,
             'user': self.user
         }
 
-        response = self.client.post('spa/habits/create/', data)
+        default_data = {
+            'place': 'TestCreate',
+            'action': 'TestCreate',
+            'linked_habit': self.private_habit,
+            'frequency': FrequencyChoices.Mo,
+            'reward': 'The bag of chips',
+            'duration': 121,
+            'published': False,
+            'user': self.user
+        }
+
+        url = reverse('spa_app:habit_create')
+        response = self.client.post(url, default_data)
 
         self.assertEqual(
             response.status_code,
